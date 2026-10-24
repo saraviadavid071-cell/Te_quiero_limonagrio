@@ -1,461 +1,426 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SalesFlow Pro - Sistema de Ventas</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <!-- Babel para JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SalesFlow — Sistema de Ventas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .tab-section {
+      display: none;
+    }
+    .tab-section.active {
+      display: block;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans antialiased">
-    <div id="root"></div>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+  <!-- Encabezado y Menú de Navegación -->
+  <header class="bg-indigo-700 text-white shadow-md">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="bg-white text-indigo-700 font-bold px-2.5 py-1 rounded text-sm tracking-wide">SF</span>
+        <div>
+          <h1 class="text-lg font-bold leading-tight">SISTEMA DE VENTAS (SalesFlow)</h1>
+          <p class="text-xs text-indigo-200">Prototipo Web — Ciclo de Vida de un Proyecto Informático</p>
+        </div>
+      </div>
 
-        function App() {
-            const [activeTab, setActiveTab] = useState('inicio');
+      <nav class="flex flex-wrap gap-1.5" aria-label="Menú principal">
+        <button type="button" data-target="inicio" class="nav-btn bg-white text-indigo-700 font-semibold px-3.5 py-2 rounded-lg text-sm transition">
+          Inicio
+        </button>
+        <button type="button" data-target="productos" class="nav-btn text-indigo-100 hover:bg-indigo-600 font-medium px-3.5 py-2 rounded-lg text-sm transition">
+          Productos
+        </button>
+        <button type="button" data-target="clientes" class="nav-btn text-indigo-100 hover:bg-indigo-600 font-medium px-3.5 py-2 rounded-lg text-sm transition">
+          Clientes
+        </button>
+        <button type="button" data-target="ventas" class="nav-btn text-indigo-100 hover:bg-indigo-600 font-medium px-3.5 py-2 rounded-lg text-sm transition">
+          Ventas
+        </button>
+      </nav>
+    </div>
+  </header>
 
-            // Estado inicial basado en la documentación del examen
-            const [productos, setProductos] = useState([
-                { id: 1, codigo: '001', nombre: 'Taladro Percutor Industrial 750W', categoria: 'Herramientas Eléctricas', precio: 2500.00, stock: 8 },
-                { id: 2, codigo: '002', nombre: 'Martillo de Uña Forjado 16 oz', categoria: 'Herramientas Manuales', precio: 350.00, stock: 15 },
-                { id: 3, codigo: '003', nombre: 'Sierra Circular Profesional 7-1/4"', categoria: 'Herramientas Eléctricas', precio: 3800.00, stock: 4 },
-                { id: 4, codigo: '004', nombre: 'Juego de Destornilladores Precisión (12 pzas)', categoria: 'Herramientas Manuales', precio: 680.00, stock: 22 },
-                { id: 5, codigo: '005', nombre: 'Compresor de Aire Portátil 25L 2HP', categoria: 'Equipos Neumáticos', precio: 5400.00, stock: 3 },
-                { id: 6, codigo: '006', nombre: 'Multímetro Digital Autorango True RMS', categoria: 'Medición Eléctrica', precio: 1250.00, stock: 12 }
-            ]);
+  <!-- Notificación Toast -->
+  <div id="toast" class="hidden fixed bottom-4 right-4 bg-emerald-600 text-white px-4 py-2.5 rounded-lg shadow-lg text-sm font-medium z-50">
+    Acción realizada correctamente
+  </div>
 
-            const [clientes, setClientes] = useState([
-                { id: 1, documento: 'J03100004599', nombre: 'Fretería Central', email: 'contacto@ferreteriacentral.com', telefono: '8888-2211', tipo: 'Corporativo' },
-                { id: 2, documento: '001-150698-0001A', nombre: 'Constructora del Norte', email: 'ventas@constructoranorte.com', telefono: '8711-3344', tipo: 'Corporativo' }
-            ]);
+  <!-- Contenido Principal -->
+  <main class="max-w-5xl w-full mx-auto px-4 py-6 flex-1">
 
-            const [ventas, setVentas] = useState([
-                { folio: 'V-0001', fecha: '2026-10-24 10:30', cliente: 'Constructora del Norte', subtotal: 5000.00, iva: 750.00, total: 5750.00 }
-            ]);
+    <!-- PÁGINA DE INICIO -->
+    <section id="inicio" class="tab-section active space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-xl font-bold text-slate-900 mb-2">Bienvenido al Sistema de Ventas</h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+          Este prototipo demuestra de forma sencilla el funcionamiento de los <strong>3 módulos principales</strong> solicitados en el examen práctico: gestión de <strong>Productos</strong>, directorio de <strong>Clientes</strong> y registro de <strong>Ventas</strong> utilizando tecnologías web básicas (HTML5, CSS y JavaScript en memoria sin necesidad de base de datos externa).
+        </p>
+      </div>
 
-            // Formulario Nuevo Producto
-            const [nuevoProd, setNuevoProd] = useState({ codigo: '', nombre: '', categoria: '', precio: '', stock: '' });
-            // Formulario Nuevo Cliente
-            const [nuevoCliente, setNuevoCliente] = useState({ documento: '', nombre: '', email: '', telefono: '', tipo: 'Regular' });
-            // Formulario Venta POS
-            const [ventaForm, setVentaForm] = useState({ clienteId: '', productoId: '', cantidad: 1 });
-            const [mensajePOS, setMensajePOS] = useState({ tipo: '', texto: '' });
+      <!-- Tarjetas de Resumen -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600">Módulo 1</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">Productos en Catálogo</h3>
+            <p class="text-3xl font-bold text-slate-800 mt-2" id="stat-productos">4</p>
+          </div>
+          <button type="button" data-goto="productos" class="goto-btn mt-4 text-left text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+            Ir a Productos →
+          </button>
+        </div>
 
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            }, [activeTab]);
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-emerald-600">Módulo 2</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">Clientes Registrados</h3>
+            <p class="text-3xl font-bold text-slate-800 mt-2" id="stat-clientes">3</p>
+          </div>
+          <button type="button" data-goto="clientes" class="goto-btn mt-4 text-left text-xs font-semibold text-emerald-600 hover:text-emerald-800">
+            Ir a Clientes →
+          </button>
+        </div>
 
-            // --- Lógica de Negocio ---
-            const handleAgregarProducto = (e) => {
-                e.preventDefault();
-                if (!nuevoProd.codigo || !nuevoProd.nombre || !nuevoProd.precio || !nuevoProd.stock) return;
-                set([...productos, {
-                    id: productos.length + 1,
-                    codigo: nuevoProd.codigo,
-                    nombre: nuevoProd.nombre,
-                    categoria: nuevoProd.categoria || 'General',
-                    precio: parseFloat(nuevoProd.precio),
-                    stock: parseInt(nuevoProd.stock)
-                }]);
-                setNuevoProd({ codigo: '', nombre: '', categoria: '', precio: '', stock: '' });
-                alert('Producto registrado exitosamente en el catálogo.');
-            };
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col justify-between">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-amber-600">Módulo 3</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">Ventas Realizadas</h3>
+            <p class="text-3xl font-bold text-slate-800 mt-2" id="stat-ventas">2</p>
+          </div>
+          <button type="button" data-goto="ventas" class="goto-btn mt-4 text-left text-xs font-semibold text-amber-600 hover:text-amber-800">
+            Ir a Ventas →
+          </button>
+        </div>
+      </div>
 
-            const handleAgregarCliente = (e) => {
-                e.preventDefault();
-                if (!nuevoCliente.documento || !nuevoCliente.nombre) return;
-                setClientes([...clientes, { id: clientes.length + 1, ...nuevoCliente }]);
-                setNuevoCliente({ documento: '', nombre: '', email: '', telefono: '', tipo: 'Regular' });
-                alert('Cliente registrado exitosamente.');
-            };
+      <!-- Resumen rápido del proyecto para la defensa del examen -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <h3 class="text-base font-bold text-slate-900 mb-3">Ficha Rápida del Proyecto (Examen Práctico)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600">
+          <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-100">
+            <p class="font-semibold text-slate-800 mb-1">Objetivo Principal</p>
+            <p>Digitalizar y agilizar el registro de productos, clientes y ventas de una ferretería/comercio mediante una interfaz web rápida y fácil de usar.</p>
+          </div>
+          <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-100">
+            <p class="font-semibold text-slate-800 mb-1">Tecnologías Utilizadas</p>
+            <p>HTML5 para la estructura, CSS (Tailwind) para el diseño limpio y adaptable, y JavaScript básico para las tablas y formularios interactivos.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            const handleRegistrarVenta = (e) => {
-                e.preventDefault();
-                setMensajePOS({ tipo: '', texto: '' });
+    <!-- MÓDULO 1: PRODUCTOS -->
+    <section id="productos" class="tab-section space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-bold text-slate-900 mb-1">Módulo 1: Gestión de Productos</h2>
+        <p class="text-xs text-slate-500 mb-4">Agrega nuevos artículos al inventario o consulta el listado actual con su precio y stock.</p>
 
-                const clienteObj = clientes.find(c => c.id === parseInt(ventaForm.clienteId));
-                const productoObj = productos.find(p => p.id === parseInt(ventaForm.productoId));
-                const cantidad = parseInt(ventaForm.cantidad);
+        <form id="form-producto" class="grid grid-cols-1 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <div>
+            <label for="prod-codigo" class="block text-xs font-semibold text-slate-700 mb-1">Código</label>
+            <input id="prod-codigo" type="text" placeholder="Ej. 005" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label for="prod-nombre" class="block text-xs font-semibold text-slate-700 mb-1">Producto</label>
+            <input id="prod-nombre" type="text" placeholder="Ej. Destornillador" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label for="prod-precio" class="block text-xs font-semibold text-slate-700 mb-1">Precio (C$)</label>
+            <input id="prod-precio" type="number" min="1" step="0.01" placeholder="Ej. 180" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label for="prod-stock" class="block text-xs font-semibold text-slate-700 mb-1">Stock</label>
+            <div class="flex gap-2">
+              <input id="prod-stock" type="number" min="1" placeholder="Ej. 20" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg text-sm transition shrink-0">
+                Agregar
+              </button>
+            </div>
+          </div>
+        </form>
 
-                if (!clienteObj || !productoObj || isNaN(cantidad) || cantidad <= 0) {
-                    setMensajePOS({ tipo: 'error', texto: 'Seleccione un cliente, un producto y una cantidad válida.' });
-                    return;
-                }
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-100 text-slate-700">
+                <th class="py-2.5 px-3 font-semibold">Código</th>
+                <th class="py-2.5 px-3 font-semibold">Producto</th>
+                <th class="py-2.5 px-3 font-semibold text-right">Precio</th>
+                <th class="py-2.5 px-3 font-semibold text-right">Stock</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-productos" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-                // RF-04: Validación de Stock
-                if (cantidad > productoObj.stock) {
-                    setMensajePOS({ tipo: 'error', texto: `Stock insuficiente. Stock disponible: ${productoObj.stock} unidades.` });
-                    return;
-                }
+    <!-- MÓDULO 2: CLIENTES -->
+    <section id="clientes" class="tab-section space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-bold text-slate-900 mb-1">Módulo 2: Directorio de Clientes</h2>
+        <p class="text-xs text-slate-500 mb-4">Registra datos de contacto de los clientes frecuentes del negocio.</p>
 
-                // Descuento automático de stock y cálculo IVA 15%
-                const subtotal = productoObj.precio * cantidad;
-                const iva = subtotal * 0.15;
-                const total = subtotal + iva;
+        <form id="form-cliente" class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <div>
+            <label for="cli-nombre" class="block text-xs font-semibold text-slate-700 mb-1">Nombre Completo</label>
+            <input id="cli-nombre" type="text" placeholder="Ej. María López" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label for="cli-telefono" class="block text-xs font-semibold text-slate-700 mb-1">Teléfono</label>
+            <input id="cli-telefono" type="text" placeholder="Ej. 8888-1234" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label for="cli-correo" class="block text-xs font-semibold text-slate-700 mb-1">Correo / Ciudad</label>
+            <div class="flex gap-2">
+              <input id="cli-correo" type="text" placeholder="Ej. Managua" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded-lg text-sm transition shrink-0">
+                Guardar
+              </button>
+            </div>
+          </div>
+        </form>
 
-                setProductos(productos.map(p => p.id === productoObj.id ? { ...p, stock: p.stock - cantidad } : p));
-                
-                const nuevoFolio = `V-00${ventas.length + 1}`;
-                const fechaActual = new Date().toISOString().replace('T', ' ').substring(0, 16);
-                
-                setVentas([{
-                    folio: nuevoFolio,
-                    fecha: fechaActual,
-                    cliente: clienteObj.nombre,
-                    subtotal,
-                    iva,
-                    total
-                }, ...ventas]);
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-100 text-slate-700">
+                <th class="py-2.5 px-3 font-semibold">ID</th>
+                <th class="py-2.5 px-3 font-semibold">Cliente</th>
+                <th class="py-2.5 px-3 font-semibold">Teléfono</th>
+                <th class="py-2.5 px-3 font-semibold">Detalle / Ubicación</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-clientes" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-                setMensajePOS({ tipo: 'success', texto: `¡Venta registrada con éxito! Folio: ${nuevoFolio} | Total: C$ ${total.toFixed(2)}` });
-                setVentaForm({ clienteId: '', productoId: '', cantidad: 1 });
-            };
+    <!-- MÓDULO 3: VENTAS -->
+    <section id="ventas" class="tab-section space-y-6">
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-bold text-slate-900 mb-1">Módulo 3: Registro de Ventas</h2>
+        <p class="text-xs text-slate-500 mb-4">Selecciona un cliente y un producto para calcular el total automáticamente y descontar del stock.</p>
 
-            // Cálculos Dashboard KPI
-            const totalFacturado = ventas.reduce((acc, v) => acc + v.total, 0);
-            const totalVentas = ventas.length;
-            const clientesActivos = clientes.length;
-            const stockCriticoCount = productos.filter(p => p.stock <= 5).length;
+        <form id="form-venta" class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <div>
+            <label for="venta-cliente" class="block text-xs font-semibold text-slate-700 mb-1">Cliente</label>
+            <select id="venta-cliente" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+          </div>
+          <div>
+            <label for="venta-producto" class="block text-xs font-semibold text-slate-700 mb-1">Producto</label>
+            <select id="venta-producto" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></select>
+          </div>
+          <div>
+            <label for="venta-cantidad" class="block text-xs font-semibold text-slate-700 mb-1">Cantidad</label>
+            <div class="flex gap-2">
+              <input id="venta-cantidad" type="number" min="1" value="1" required class="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-lg text-sm transition shrink-0">
+                Vender
+              </button>
+            </div>
+          </div>
+        </form>
 
-            return (
-                <div className="min-h-screen flex flex-col">
-                    {/* Navbar SPA */}
-                    <nav className="bg-slate-900 text-white shadow-md sticky top-0 z-50">
-                        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-                            <div className="flex items-center space-x-3">
-                                <span className="bg-blue-600 p-2 rounded-lg font-bold text-lg">SF</span>
-                                <span className="font-bold text-xl tracking-wide">SalesFlow Pro</span>
-                            </div>
-                            <div className="hidden md:flex space-x-1">
-                                <button onClick={() => setActiveTab('inicio')} className={`px-4 py-2 rounded-md transition ${activeTab === 'inicio' ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300'}`}>Inicio (Dashboard)</button>
-                                <button onClick={() => setActiveTab('productos')} className={`px-4 py-2 rounded-md transition ${activeTab === 'productos' ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300'}`}>Productos</button>
-                                <button onClick={() => setActiveTab('clientes')} className={`px-4 py-2 rounded-md transition ${activeTab === 'clientes' ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300'}`}>Clientes</button>
-                                <button onClick={() => setActiveTab('ventas')} className={`px-4 py-2 rounded-md transition ${activeTab === 'ventas' ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300'}`}>Ventas (POS)</button>
-                                <button onClick={() => setActiveTab('arquitectura')} className={`px-4 py-2 rounded-md transition ${activeTab === 'arquitectura' ? 'bg-blue-600 text-white' : 'hover:bg-slate-800 text-slate-300'}`}>Arquitectura C#</button>
-                            </div>
-                        </div>
-                    </nav>
+        <div class="mt-5 overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-100 text-slate-700">
+                <th class="py-2.5 px-3 font-semibold">Factura</th>
+                <th class="py-2.5 px-3 font-semibold">Cliente</th>
+                <th class="py-2.5 px-3 font-semibold">Producto</th>
+                <th class="py-2.5 px-3 font-semibold text-right">Cant.</th>
+                <th class="py-2.5 px-3 font-semibold text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-ventas" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-                    {/* Contenido Principal */}
-                    <main className="flex-1 max-w-7xl w-full mx-auto p-6">
-                        
-                        {/* VISTA 1: INICIO / DASHBOARD */}
-                        {activeTab === 'inicio' && (
-                            <div className="space-y-6">
-                                <h1 className="text-2xl font-bold text-slate-800">Dashboard Operativo</h1>
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                        <p className="text-sm font-medium text-slate-500">Ingresos Totales</p>
-                                        <h3 className="text-2xl font-bold text-slate-900 mt-1">C$ {totalFacturado.toLocaleString('en-US', {minimumFractionDigits: 2})}</h3>
-                                    </div>
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                        <p className="text-sm font-medium text-slate-500">Ventas Realizadas</p>
-                                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{totalVentas}</h3>
-                                    </div>
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                        <p className="text-sm font-medium text-slate-500">Clientes Activos</p>
-                                        <h3 className="text-2xl font-bold text-slate-900 mt-1">{clientesActivos}</h3>
-                                    </div>
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 border-l-4 border-l-red-500">
-                                        <p className="text-sm font-medium text-slate-500">Alertas de Stock Crítico (≤ 5)</p>
-                                        <h3 className="text-2xl font-bold text-red-600 mt-1">{stockCriticoCount}</h3>
-                                    </div>
-                                </div>
+  </main>
 
-                                <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                                    <h2 className="text-lg font-semibold text-slate-800 mb-4">Últimas Transacciones Registradas</h2>
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left border-collapse">
-                                            <thead>
-                                                <tr className="border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
-                                                    <th className="py-3 px-4">Folio</th>
-                                                    <th className="py-3 px-4">Fecha</th>
-                                                    <th className="py-3 px-4">Cliente</th>
-                                                    <th className="py-3 px-4">Subtotal</th>
-                                                    <th className="py-3 px-4">IVA (15%)</th>
-                                                    <th className="py-3 px-4">Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                                                {ventas.map((v, i) => (
-                                                    <tr key={i} className="hover:bg-slate-50">
-                                                        <td className="py-3 px-4 font-medium text-blue-600">{v.folio}</td>
-                                                        <td className="py-3 px-4">{v.fecha}</td>
-                                                        <td className="py-3 px-4">{v.cliente}</td>
-                                                        <td className="py-3 px-4">C$ {v.subtotal.toFixed(2)}</td>
-                                                        <td className="py-3 px-4">C$ {v.iva.toFixed(2)}</td>
-                                                        <td className="py-3 px-4 font-bold">C$ {v.total.toFixed(2)}</td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+  <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+    Prototipo Demostrativo — Examen Práctico: Ciclo de Vida de un Proyecto Informático
+  </footer>
 
-                        {/* VISTA 2: PRODUCTOS */}
-                        {activeTab === 'productos' && (
-                            <div className="space-y-6">
-                                <h1 className="text-2xl font-bold text-slate-800">Catálogo de Productos</h1>
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-1 h-fit">
-                                        <h2 className="text-lg font-semibold text-slate-800 mb-4">Registrar Nuevo Producto</h2>
-                                        <form onSubmit={handleAgregarProducto} className="space-y-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Código SKU</label>
-                                                <input type="text" value={nuevoProd.codigo} onChange={e=>setNuevoProd({...nuevoProd, codigo: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="Ej. 007" required />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Nombre del Producto</label>
-                                                <input type="text" value={nuevoProd.nombre} onChange={e=>setNuevoProd({...nuevoProd, nombre: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="Ej. Esmeriladora" required />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Categoría</label>
-                                                <input type="text" value={nuevoProd.categoria} onChange={e=>setNuevoProd({...nuevoProd, categoria: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="Ej. Herramientas Eléctricas" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Precio Unitario (C$)</label>
-                                                <input type="number" step="0.01" value={nuevoProd.precio} onChange={e=>setNuevoProd({...nuevoProd, precio: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="0.00" required />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Stock Inicial</label>
-                                                <input type="number" value={nuevoProd.stock} onChange={e=>setNuevoProd({...nuevoProd, stock: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="0" required />
-                                            </div>
-                                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition">Guardar Producto</button>
-                                        </form>
-                                    </div>
-                                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:col-span-2">
-                                        <h2 className="text-lg font-semibold text-slate-800 mb-4">Inventario Actual</h2>
-                                        <div className="overflow-x-auto">
-                                            <table className="w-full text-left border-collapse">
-                                                <thead>
-                                                    <tr className="border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
-                                                        <th className="py-3 px-4">Código</th>
-                                                        <th className="py-3 px-4">Producto</th>
-                                                        <th className="py-3 px-4">Categoría</th>
-                                                        <th className="py-3 px-4">Precio (C$)</th>
-                                                        <th className="py-3 px-4">Stock</th>
-                                                        <th className="py-3 px-4">Estado</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                                                    {productos.map((p) => (
-                                                        <tr key={p.id} className="hover:bg-slate-50">
-                                                            <td className="py-3 px-4 font-medium text-blue-600">{p.codigo}</td>
-                                                            <td className="py-3 px-4 font-semibold">{p.nombre}</td>
-                                                            <td className="py-3 px-4 text-slate-500">{p.categoria}</td>
-                                                            <td className="py-3 px-4">C$ {p.precio.toFixed(2)}</td>
-                                                            <td className="py-3 px-4 font-bold">{p.stock}</td>
-                                                            <td className="py-3 px-4">
-                                                                {p.stock <= 5 ? (
-                                                                    <span className="bg-red-100 text-red-700 px-2.5 py-1 rounded-full text-xs font-semibold">Stock Crítico</span>
-                                                                ) : (
-                                                                    <span className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-semibold">Disponible</span>
-                                                                )}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+  <script>
+    // Datos ficticios iniciales (inspirados en el ejemplo del examen)
+    const state = {
+      productos: [
+        { codigo: '001', nombre: 'Taladro', precio: 2500, stock: 8 },
+        { codigo: '002', nombre: 'Martillo', precio: 350, stock: 15 },
+        { codigo: '003', nombre: 'Caja de Herramientas', precio: 1200, stock: 10 },
+        { codigo: '004', nombre: 'Cinta Métrica 5m', precio: 180, stock: 25 }
+      ],
+      clientes: [
+        { id: 'C-01', nombre: 'Carlos Mendoza', telefono: '8845-2310', correo: 'Managua' },
+        { id: 'C-02', nombre: 'Ana Sofía Rivas', telefono: '8712-9940', correo: 'Masaya' },
+        { id: 'C-03', nombre: 'Ferretería El Constructor', telefono: '2244-1100', correo: 'León' }
+      ],
+      ventas: [
+        { factura: 'F-101', cliente: 'Carlos Mendoza', producto: 'Taladro', cantidad: 1, total: 2500 },
+        { factura: 'F-102', cliente: 'Ana Sofía Rivas', producto: 'Martillo', cantidad: 2, total: 700 }
+      ]
+    };
 
-                        {/* VISTA 3: CLIENTES */}
-                        {activeTab === 'clientes' && (
-                            <div className="space-y-6">
-                                <h1 className="text-2xl font-bold text-slate-800">Cartera de Clientes</h1>
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 lg:col-span-1 h-fit">
-                                        <h2 className="text-lg font-semibold text-slate-800 mb-4">Registrar Cliente</h2>
-                                        <form onSubmit={handleAgregarCliente} className="space-y-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Cédula / RUC</label>
-                                                <input type="text" value={nuevoCliente.documento} onChange={e=>setNuevoCliente({...nuevoCliente, documento: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="Ej. J031..." required />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Nombre Completo / Empresa</label>
-                                                <input type="text" value={nuevoCliente.nombre} onChange={e=>setNuevoCliente({...nuevoCliente, nombre: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="Ej. Ferretería Central" required />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico</label>
-                                                <input type="email" value={nuevoCliente.email} onChange={e=>setNuevoCliente({...nuevoCliente, email: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="correo@dominio.com" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Teléfono</label>
-                                                <input type="text" value={nuevoCliente.telefono} onChange={e=>setNuevoCliente({...nuevoCliente, telefono: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" placeholder="8888-2211" />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Tipo de Cliente</label>
-                                                <select value={nuevoCliente.tipo} onChange={e=>setNuevoCliente({...nuevoCliente, tipo: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm">
-                                                    <option value="Regular">Regular</option>
-                                                    <option value="Corporativo">Corporativo</option>
-                                                </select>
-                                            </div>
-                                            <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition">Guardar Cliente</button>
-                                        </form>
-                                    </div>
-                                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:col-span-2">
-                                        <h2 className="text-lg font-semibold text-slate-800 mb-4">Directorio de Clientes</h2>
-                                        <div className="overflow-x-auto">
-                                            <table className="w-full text-left border-collapse">
-                                                <thead>
-                                                    <tr className="border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase">
-                                                        <th className="py-3 px-4">Documento</th>
-                                                        <th className="py-3 px-4">Nombre / Empresa</th>
-                                                        <th className="py-3 px-4">Contacto</th>
-                                                        <th className="py-3 px-4">Tipo</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                                                    {clientes.map((c) => (
-                                                        <tr key={c.id} className="hover:bg-slate-50">
-                                                            <td className="py-3 px-4 font-medium text-blue-600">{c.documento}</td>
-                                                            <td className="py-3 px-4 font-semibold">{c.nombre}</td>
-                                                            <td className="py-3 px-4">{c.telefono} <br/><span className="text-xs text-slate-400">{c.email}</span></td>
-                                                            <td className="py-3 px-4">
-                                                                <span className="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full text-xs font-semibold">{c.tipo}</span>
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* VISTA 4: VENTAS (POS) */}
-                        {activeTab === 'ventas' && (
-                            <div className="space-y-6">
-                                <h1 className="text-2xl font-bold text-slate-800">Punto de Venta (POS)</h1>
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
-                                        <h2 className="text-lg font-semibold text-slate-800 mb-4">Generar Factura</h2>
-                                        {mensajePOS.texto && (
-                                            <div className={`p-4 mb-4 rounded-lg text-sm font-medium ${mensajePOS.tipo === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'}`}>
-                                                {mensajePOS.texto}
-                                            </div>
-                                        )}
-                                        <form onSubmit={handleRegistrarVenta} className="space-y-4">
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Seleccionar Cliente</label>
-                                                <select value={ventaForm.clienteId} onChange={e=>setVentaForm({...ventaForm, clienteId: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" required>
-                                                    <option value="">-- Elija un cliente --</option>
-                                                    {clientes.map(c => <option key={c.id} value={c.id}>{c.nombre} ({c.documento})</option>)}
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Seleccionar Producto</label>
-                                                <select value={ventaForm.productoId} onChange={e=>setVentaForm({...ventaForm, productoId: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" required>
-                                                    <option value="">-- Elija un producto --</option>
-                                                    {productos.map(p => <option key={p.id} value={p.id}>{p.nombre} - C$ {p.precio.toFixed(2)} (Stock: {p.stock})</option>)}
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-slate-700 mb-1">Cantidad</label>
-                                                <input type="number" min="1" value={ventaForm.cantidad} onChange={e=>setVentaForm({...ventaForm, cantidad: e.target.value})} className="w-full border border-slate-300 rounded-lg p-2 text-sm" required />
-                                            </div>
-                                            <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 rounded-lg transition">Registrar Venta y Descontar Stock</button>
-                                        </form>
-                                    </div>
-
-                                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                        <h2 className="text-lg font-semibold text-slate-800 mb-4">Resumen de Facturación en Vivo</h2>
-                                        {ventaForm.productoId ? (() => {
-                                            const p = productos.find(x => x.id === parseInt(ventaForm.productoId));
-                                            const cant = parseInt(ventaForm.cantidad) || 0;
-                                            const sub = (p ? p.precio : 0) * cant;
-                                            const iv = sub * 0.15;
-                                            const tot = sub + iv;
-                                            return (
-                                                <div className="space-y-3 text-sm bg-slate-50 p-4 rounded-lg border border-slate-200">
-                                                    <div className="flex justify-between"><span className="text-slate-500">Producto:</span><span className="font-medium text-slate-800">{p.nombre}</span></div>
-                                                    <div className="flex justify-between"><span className="text-slate-500">Precio Unitario:</span><span className="font-medium text-slate-800">C$ {p.precio.toFixed(2)}</span></div>
-                                                    <div className="flex justify-between"><span className="text-slate-500">Cantidad Solicitada:</span><span className="font-medium text-slate-800">{cant}</span></div>
-                                                    <div className="flex justify-between border-t border-slate-200 pt-2"><span className="text-slate-500">Subtotal:</span><span className="font-medium text-slate-800">C$ {sub.toFixed(2)}</span></div>
-                                                    <div className="flex justify-between"><span className="text-slate-500">IVA (15%):</span><span className="font-medium text-slate-800">C$ {iv.toFixed(2)}</span></div>
-                                                    <div className="flex justify-between border-t border-slate-200 pt-2 text-base font-bold text-blue-600"><span>Total a Pagar:</span><span>C$ {tot.toFixed(2)}</span></div>
-                                                </div>
-                                            );
-                                        })() : (
-                                            <p className="text-slate-400 text-sm">Seleccione un producto en el formulario para visualizar los cálculos automáticos de subtotal e impuestos.</p>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* VISTA 5: ARQUITECTURA C# / SQL */}
-                        {activeTab === 'arquitectura' && (
-                            <div className="space-y-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                <h1 className="text-2xl font-bold text-slate-800">Diseño Arquitectónico (C# .NET 8 y SQL Server)</h1>
-                                <p className="text-slate-600 text-sm">Referencia del backend y procedimiento almacenado transaccional ACID especificado en la documentación del proyecto:</p>
-                                
-                                <div>
-                                    <h3 className="font-semibold text-slate-800 mb-2">Endpoint C# de Referencia (.NET 8 Web API)</h3>
-                                    <pre className="bg-slate-900 text-slate-200 p-4 rounded-lg text-xs overflow-x-auto">
-{`[ApiController]
-[Route("api/[controller]")]
-public class VentasController : ControllerBase
-{
-    private readonly SalesFlowDbContext _context;
-
-    public VentasController(SalesFlowDbContext context)
-    {
-        _context = context;
+    function mostrarToast(mensaje) {
+      const toast = document.getElementById('toast');
+      toast.textContent = mensaje;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> RegistrarVenta([FromBody] VentaDto dto)
-    {
-        using var transaction = await _context.Database.BeginTransactionAsync();
-        try
-        {
-            // Ejecución de Transacción atómica (COMMIT / ROLLBACK)
-            var resultado = await _context.Database.ExecuteSqlRawAsync(
-                "EXEC sp_RegistrarVenta @ClienteID, @ProductoID, @Cantidad",
-                new SqlParameter("@ClienteID", dto.ClienteID),
-                new SqlParameter("@ProductoID", dto.ProductoID),
-                new SqlParameter("@Cantidad", dto.Cantidad)
-            );
-
-            await transaction.CommitAsync();
-            return Ok(new { mensaje = "Venta registrada e inventario actualizado correctamente." });
-        }
-        catch (Exception ex)
-        {
-            await transaction.RollbackAsync();
-            return BadRequest(new { error = ex.Message });
-        }
+    function cambiarPestana(targetId) {
+      document.querySelectorAll('.tab-section').forEach(sec => {
+        sec.classList.toggle('active', sec.id === targetId);
+      });
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const activo = btn.getAttribute('data-target') === targetId;
+        btn.className = activo
+          ? 'nav-btn bg-white text-indigo-700 font-semibold px-3.5 py-2 rounded-lg text-sm transition'
+          : 'nav-btn text-indigo-100 hover:bg-indigo-600 font-medium px-3.5 py-2 rounded-lg text-sm transition';
+      });
     }
-}`}
-                                    </pre>
-                                </div>
-                            </div>
-                        )}
 
-                    </main>
-                </div>
-            );
-        }
+    function renderizarTodo() {
+      // Actualizar contadores en Inicio
+      document.getElementById('stat-productos').textContent = state.productos.length;
+      document.getElementById('stat-clientes').textContent = state.clientes.length;
+      document.getElementById('stat-ventas').textContent = state.ventas.length;
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    </script>
+      // Renderizar tabla de Productos
+      const tbodyProd = document.getElementById('tabla-productos');
+      tbodyProd.innerHTML = state.productos.map(p => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-3 font-medium text-slate-900">${p.codigo}</td>
+          <td class="py-2.5 px-3">${p.nombre}</td>
+          <td class="py-2.5 px-3 text-right">C$ ${p.precio.toLocaleString('es-NI', { minimumFractionDigits: 2 })}</td>
+          <td class="py-2.5 px-3 text-right font-semibold ${p.stock <= 3 ? 'text-amber-600' : 'text-slate-700'}">${p.stock}</td>
+        </tr>
+      `).join('');
+
+      // Renderizar tabla de Clientes
+      const tbodyCli = document.getElementById('tabla-clientes');
+      tbodyCli.innerHTML = state.clientes.map(c => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-3 font-medium text-slate-900">${c.id}</td>
+          <td class="py-2.5 px-3">${c.nombre}</td>
+          <td class="py-2.5 px-3">${c.telefono}</td>
+          <td class="py-2.5 px-3 text-slate-600">${c.correo}</td>
+        </tr>
+      `).join('');
+
+      // Renderizar selectores en Ventas
+      const selectCli = document.getElementById('venta-cliente');
+      selectCli.innerHTML = state.clientes.map(c => `<option value="${c.nombre}">${c.nombre}</option>`).join('');
+
+      const selectProd = document.getElementById('venta-producto');
+      selectProd.innerHTML = state.productos.map(p => `<option value="${p.codigo}">${p.nombre} (C$ ${p.precio} | Stock: ${p.stock})</option>`).join('');
+
+      // Renderizar tabla de Ventas
+      const tbodyVen = document.getElementById('tabla-ventas');
+      tbodyVen.innerHTML = state.ventas.map(v => `
+        <tr class="hover:bg-slate-50">
+          <td class="py-2.5 px-3 font-medium text-slate-900">${v.factura}</td>
+          <td class="py-2.5 px-3">${v.cliente}</td>
+          <td class="py-2.5 px-3">${v.producto}</td>
+          <td class="py-2.5 px-3 text-right">${v.cantidad}</td>
+          <td class="py-2.5 px-3 text-right font-semibold text-emerald-700">C$ ${v.total.toLocaleString('es-NI', { minimumFractionDigits: 2 })}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Eventos de navegación
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => cambiarPestana(btn.getAttribute('data-target')));
+    });
+
+    document.querySelectorAll('.goto-btn').forEach(btn => {
+      btn.addEventListener('click', () => cambiarPestana(btn.getAttribute('data-goto')));
+    });
+
+    // Evento agregar producto
+    document.getElementById('form-producto').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const codigo = document.getElementById('prod-codigo').value.trim();
+      const nombre = document.getElementById('prod-nombre').value.trim();
+      const precio = parseFloat(document.getElementById('prod-precio').value);
+      const stock = parseInt(document.getElementById('prod-stock').value, 10);
+
+      if (!codigo || !nombre || isNaN(precio) || isNaN(stock)) return;
+
+      state.productos.push({ codigo, nombre, precio, stock });
+      e.target.reset();
+      renderizarTodo();
+      mostrarToast('Producto agregado al catálogo');
+    });
+
+    // Evento agregar cliente
+    document.getElementById('form-cliente').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nombre = document.getElementById('cli-nombre').value.trim();
+      const telefono = document.getElementById('cli-telefono').value.trim();
+      const correo = document.getElementById('cli-correo').value.trim();
+
+      if (!nombre || !telefono || !correo) return;
+
+      const nuevoId = 'C-0' + (state.clientes.length + 1);
+      state.clientes.push({ id: nuevoId, nombre, telefono, correo });
+      e.target.reset();
+      renderizarTodo();
+      mostrarToast('Cliente registrado correctamente');
+    });
+
+    // Evento registrar venta
+    document.getElementById('form-venta').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cliente = document.getElementById('venta-cliente').value;
+      const codProducto = document.getElementById('venta-producto').value;
+      const cantidad = parseInt(document.getElementById('venta-cantidad').value, 10);
+
+      const prod = state.productos.find(p => p.codigo === codProducto);
+      if (!prod || isNaN(cantidad) || cantidad < 1) return;
+
+      if (cantidad > prod.stock) {
+        mostrarToast('Stock insuficiente para realizar la venta');
+        return;
+      }
+
+      prod.stock -= cantidad;
+      const nuevaFactura = 'F-' + (101 + state.ventas.length);
+      const total = prod.precio * cantidad;
+
+      state.ventas.unshift({
+        factura: nuevaFactura,
+        cliente,
+        producto: prod.nombre,
+        cantidad,
+        total
+      });
+
+      document.getElementById('venta-cantidad').value = 1;
+      renderizarTodo();
+      mostrarToast('Venta registrada con éxito');
+    });
+
+    // Inicializar vista
+    renderizarTodo();
+  </script>
 </body>
 </html>
+
